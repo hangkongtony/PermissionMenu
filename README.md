@@ -1,1 +1,2 @@
-# PermissionMenuDemo
+# PermissionMenu
+根据用户的角色，如超级管理员，普通管理员等，来生成对应的菜单给用户进行操作。
