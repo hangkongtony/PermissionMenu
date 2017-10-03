@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap>
+
+    <typeAlias alias="Menu" type="com.penghk.learn.domain.Menu"/>
+    <typeAlias alias="RoleMenuBean" type="com.penghk.learn.domain.RoleMenuBean"/>
+
+    <parameterMap id="paramMap" class="Menu">
+        <parameter property="id"/>
+        <parameter property="pId"/>
+        <parameter property="name"/>
+        <parameter property="url"/>
+    </parameterMap>
+
+    <resultMap id="menuResult" class="Menu">
+        <result property="id" column="mid"/>
+        <result property="pId" column="father_id"/>
+        <result property="name" column="mname"/>
+        <result property="url" column="url"/>
+    </resultMap>
+
+    <resultMap id="roleMenuResult" class="RoleMenuBean">
+        <result property="roleId" column="role_id"/>
+        <result property="mid" column="mid"/>
+    </resultMap>
+
+    <select id="getAllMenu" resultMap="menuResult">
+        SELECT * FROM menu;
+    </select>
+
+    <select id="getAllMenuByRole" resultMap="menuResult" parameterClass="java.util.List">
+        SELECT * FROM menu m WHERE m.mid IN
+        <iterate conjunction="," open="(" close=")">
+              #menuIds[]#
+        </iterate>
+    </select>
+
+    <select id="getAllRoleMenuBean" parameterClass="java.lang.Integer" resultMap="roleMenuResult">
+        SELECT * FROM role_menu WHERE role_id = #roleId#
+    </select>
+</sqlMap>

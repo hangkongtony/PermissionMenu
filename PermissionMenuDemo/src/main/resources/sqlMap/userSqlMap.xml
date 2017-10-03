@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap>
+
+    <typeAlias alias="User" type="com.penghk.learn.domain.User" />
+
+    <parameterMap id="paramMap" class="User">
+        <parameter property="id"/>
+        <parameter property="loginName"/>
+        <parameter property="password"/>
+        <parameter property="roleId"/>
+        <parameter property="state"/>
+    </parameterMap>
+
+    <resultMap id="userResult" class="User">
+        <result property="id" column="id" />
+        <result property="loginName" column="logginname" />
+        <result property="password" column="password" />
+        <result property="roleId" column="role_Id" />
+        <result property="state" column="state" />
+    </resultMap>
+
+    <select id="selectAllUsers" resultMap="userResult">
+        select * from users;
+    </select>
+
+    <select id="getUserByName" parameterClass="java.lang.String" resultMap="userResult">
+        SELECT * FROM users WHERE logginname = #loginName#
+    </select>
+
+
+    <select id="getUserById" parameterClass="java.lang.Integer" resultMap="userResult">
+        SELECT * FROM users WHERE id = #id#
+    </select>
+
+    <update id="updateUser">
+        UPDATE users SET logginname=#loginName#,password=#password#,role_Id=#roleId#,state=#state# WHERE id = #id#
+    </update>
+</sqlMap>

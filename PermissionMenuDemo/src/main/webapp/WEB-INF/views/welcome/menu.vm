@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<HEAD>
+    <TITLE> ZTREE DEMO - checkbox</TITLE>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+##    <script type="text/javascript" src="$!{basePath}/common/resources/js/jquery-1.7.2.js"></script>
+    <link rel="stylesheet" href="$!{basePath}/common/resources/css/zTreeStyle.css" type="text/css">
+
+    <script type="text/javascript" src="$!{basePath}/common/resources/js/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="$!{basePath}/common/resources/js/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="$!{basePath}/common/resources/js/jquery.ztree.excheck.js"></script>
+
+    <style type="text/css">
+        .h1 {
+            margin: 0 auto;
+        }
+
+        body{
+            text-align :center;
+            background:url(/upload/bottom.jpg) top left;
+            background-size:100% 100%;
+            background-repeat:no-repeat;
+        }
+        #divsession{
+            text-align:right;
+        }
+    </style>
+    <script type="text/javascript">
+
+        var setting = {
+//            callback: {
+//                onDblClick: zTreeOnDblClick
+//            },
+            check: {
+                enable: true
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            }
+        };
+
+        var tree = "";
+        #foreach($!{menu} in $!{menus})
+            #if("$!{menu.pId}"=="")
+                #set(${menu.pId}=0)
+            #end
+            tree += "{id:$!{menu.id},pId:$!{menu.pId},name:'$!{menu.name}',url:'$!{menu.url}',target:'right'},";
+        #end
+        tree = tree.substring(0,tree.length-1);
+        console.log(tree);
+        $(function () {
+            var menuArr = eval("["+tree+"]");
+            $.fn.zTree.init($("#treeDemo"), setting, menuArr);
+        });
+
+        /**
+         * 获取菜单信息
+         */
+##        $(function () {
+##
+##            $.ajax({
+##                type:'post',
+##                async:false,
+##                url:'$!{basePath}/menu/all.htm',
+##                dataType:'json',
+##                success:function (data) {
+##                    var menuArr = data;
+##                    console.log(menuArr)
+##                    $.fn.zTree.init($("#treeDemo"), setting, menuArr);
+##                },
+##                error:function () {
+##                    alert("ajax error!")
+##                }
+##            });
+##        });
+
+        function addMenu() {
+            
+        }
+        
+        function deleteMenu() {
+            
+        }
+    </script>
+
+</HEAD>
+
+<BODY>
+
+<h2 align="center"><font color="blue">菜单展示</font></h2>
+<h3><font color="red">$!msg</font></h3>
+<div class="content_wrap" >
+    <div class="zTreeDemoBackground left">
+        <ul id="treeDemo" class="ztree"></ul>
+    </div><br>
+    <div style="position:absolute;top:50;right:50">
+        <input type="button" value=" +" title="增加菜单" onclick="addMenu()" /><br>
+        <input type="button" value=" - " title="删除菜单" onclick="deleteMenu()"/>
+    </div>
+
+
+</div>
+</BODY>
+</html>

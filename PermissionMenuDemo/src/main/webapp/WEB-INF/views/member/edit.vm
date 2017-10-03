@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <title>会员详情查看</title>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <script type="text/javascript" src="../../common/resources/js/jquery-1.7.2.js"></script>
+    <style type="text/css">
+        .h1 {
+            margin: 0 auto;
+        }
+        #div{
+            border:1px solid #000;
+            padding-left:10px;
+            padding-right:10px;
+            padding-top:10px;
+            padding-bottom:10px
+        }
+
+        body{
+            text-align :center;
+            background:url(/upload/bottom.jpg) top left;
+            background-size:100% 100%;
+            background-repeat:no-repeat;
+        }
+
+
+    </style>
+    <script type="text/javascript">
+
+        function doSubmit() {
+            if($("#idCard").val()==""){
+                alert("请填写身份证号！");
+                return false;
+            }else {
+                var regExp = /^[1-9]{1}[0-9]{14}$|^[1-9]{1}[0-9]{16}([0-9]|[xX])$/;
+                if(!regExp.test($("#idCard").val())){
+                    alert("请输入正确的身份证号！");
+                    return false;
+                }
+            }
+            document.forms[0].submit();
+        }
+
+        function changePhoto() {
+            if(confirm("确定更换头像吗？")){
+                document.getElementById("img1").style.display="none";
+                document.getElementById("div1").style.display="block";
+            }
+        }
+    </script>
+</head>
+<body >
+<form action="/member/do_member_edit" method="post" enctype="multipart/form-data">
+    <div id="top">
+        <img src="/upload/top.jpg" />
+    </div>
+    <div id="div">
+        <input type="hidden" value="$!result.id" id="id" name="id">
+        <input type="hidden" value="$!result.photo" id="photo" name="photo">
+    <h2 style="position:relative;left:10px"><font color="blue">会员信息修改</font></h2>
+    <div id="div7">
+        <h3><font color="red">$!msg</font></h3>
+    </div>
+    <table border="1" cellspacing="0px" style="border-collapse:collapse" width="747">
+        <tr><th width="200">会员号</th><td width="250">
+            <input type="text" name="memberNo" id="memberNo" readonly size="30" value="$!result.memberNo"/>
+        </td><th>头像</th></tr>
+        <tr><th>姓名</th><td>
+            <input type="text" id="memberName" size="30" name="memberName" value="$!result.memberName">
+        </td>
+            <td rowspan="6">
+                #if($!result.photo)
+                    <img src="$!result.photo" width="274" height="247" id="img1" onclick="changePhoto()"/>
+                #end
+                <div id="div1" width="274" height="247" style="display:none">
+                    <input type="file" id="file"  size="30" name="file"  value=""/>
+                </div>
+            </td>
+        </tr>
+        <tr><th>年龄</th><td><input type="text" id="age" name="age" size="30" value="$!result.age"></td></tr>
+        <tr><th>身份证号</th><td><input type="text" id="idCard" name="idCard" size="30" value="$!result.idCard"/></td></tr>
+        <tr><th>籍贯</th><td><input type="text" name="address" id="address" size="30" value="$!result.address"/></td></tr>
+        <tr><th>学历</th><td><input type="text" name="educateGrade" id="educateGrade" size="30" value="$!result.educateGrade"/></td></tr>
+        <tr><th>备注</th><td><textarea name="remark" id="remark" >$!result.remark </textarea></td></tr>
+        <tr><td style="text-align:right" colspan="3">
+            <input type="button" value="修改" onclick="doSubmit()"/>
+            <input type="button" onclick="javascript:history.go(-1);" value="返回"/>
+        </td></tr>
+    </table>
+    </div>
+</form>
+
+</body>
+</html>

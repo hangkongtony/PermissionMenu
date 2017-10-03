@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <title>权限菜单生成工具</title>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <script type="text/javascript" src="$!{basePath}/common/resources/js/jquery-1.7.2.js"></script>
+    <style type="text/css">
+        .h1 {
+            margin: 0 auto;
+        }
+
+
+        body{
+            text-align :center;
+        }
+
+    </style>
+    <script type="text/javascript">
+
+        function clear(){
+            $("#status").html("");
+        }
+
+    </script>
+</head>
+<frameset cols="25%,*">
+##    <frame src="/welcome/menu" name="left"/>##进入菜单控制器
+    <frame src="/menu/all?roleId=$!{roleId}" name="left"/>##进入菜单控制器
+    <frame src="/welcome/content" name="right"/>
+</frameset>
+
+</html>

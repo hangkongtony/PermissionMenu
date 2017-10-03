@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap>
+    <typeAlias alias="Role" type="com.penghk.learn.domain.Role"/>
+
+    <parameterMap id="paramMap" class="Role">
+        <parameter property="roleId"/>
+        <parameter property="roleName"/>
+    </parameterMap>
+
+    <resultMap id="roleResult" class="Role">
+        <result property="roleId" column="role_id"/>
+        <result property="roleName" column="role_name"/>
+    </resultMap>
+
+    <select id="getAllRole" resultMap="roleResult">
+        SELECT * FROM role;
+    </select>
+
+    <delete id="deleteRoleMenuByRoleId" parameterClass="java.lang.Integer">
+          DELETE FROM role_menu WHERE role_id = #roleId#
+    </delete>
+
+
+    <insert id="allocateRoleMenu" parameterClass="java.util.List">
+        <![CDATA[
+          INSERT INTO role_menu(role_id, mid) VALUES
+        ]]>
+        <iterate conjunction=",">
+            <![CDATA[
+              (#roleMenuBeans[].roleId#,#roleMenuBeans[].mid#)
+            ]]>
+        </iterate>
+    </insert>
+</sqlMap>

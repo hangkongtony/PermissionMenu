@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap>
+
+    <!-- 会员-->
+    <typeAlias alias="Member" type="com.penghk.learn.domain.Member"/>
+
+    <parameterMap id="paramMap" class="Member">
+        <parameter property="id"/>
+        <parameter property="memberNo"/>
+        <parameter property="memberName"/>
+        <parameter property="photo"/>
+        <parameter property="age"/>
+        <parameter property="idCard"/>
+        <parameter property="loginTime"/>
+        <parameter property="address"/>
+        <parameter property="educateGrade"/>
+        <parameter property="remark"/>
+    </parameterMap>
+
+    <resultMap id="memberResult" class="Member">
+        <result property="id" column="id"/>
+        <result property="memberNo" column="member_no"/>
+        <result property="memberName" column="member_name"/>
+        <result property="photo" column="photo"/>
+        <result property="age" column="age"/>
+        <result property="idCard" column="idcard"/>
+        <result property="loginTime" column="login_time"/>
+        <result property="address" column="address"/>
+        <result property="educateGrade" column="educateGrade"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <select id="getAllMember" resultMap="memberResult">
+        SELECT * FROM member;
+    </select>
+
+    <select id="getQueryMember" resultMap="memberResult" parameterMap="paramMap">
+        SELECT * FROM member
+        <dynamic prepend="where">
+            <isNotEmpty property="id" prepend="and">
+                id=#id#
+            </isNotEmpty>
+            <isNotEmpty property="memberNo" prepend="and">
+                member_no=#memberNo#
+            </isNotEmpty>
+            <isNotEmpty property="memberName" prepend="and">
+                member_name=#memberName#
+            </isNotEmpty>
+            <isNotEmpty property="idCard" prepend="and">
+                idcard=#idCard#
+            </isNotEmpty>
+        </dynamic>
+    </select>
+
+    <delete id="deleteMember" parameterMap="paramMap">
+        DELETE FROM member
+        <dynamic prepend="where">
+            <isNotEmpty property="id" prepend="and">
+                id=#id#
+            </isNotEmpty>
+            <isNotEmpty property="memberNo" prepend="and">
+                member_no=#memberNo#
+            </isNotEmpty>
+            <isNotEmpty property="memberName" prepend="and">
+                member_name=#memberName#
+            </isNotEmpty>
+            <isNotEmpty property="idCard" prepend="and">
+                idcard=#idCard#
+            </isNotEmpty>
+        </dynamic>
+    </delete>
+
+    <update id="updateMember">
+        UPDATE member SET member_name=#memberName#,photo=#photo#,age=#age#,idcard=#idCard#,address=#address#,educateGrade=#educateGrade#,
+        remark=#remark# WHERE id=#id#
+    </update>
+</sqlMap>

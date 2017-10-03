@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <title>会员查看</title>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <script type="text/javascript" src="$!{basePath}/common/resources/js/jquery-1.7.2.js"></script>
+    <style type="text/css">
+        .h1 {
+            margin: 0 auto;
+        }
+        #div{
+            border:1px solid #000;
+            padding-left:10px;
+            padding-right:10px;
+            padding-top:10px;
+            padding-bottom:10px
+        }
+        #div1{
+            border:1px solid #000;
+        }
+        #div2{
+            border:1px solid #000;
+            margin-top:10px
+        }
+        #div3{
+            margin-top:10px;
+            margin-right:847px
+        }
+        #div4{
+            margin-top:10px;
+            margin-left:10px;
+            margin-bottom:20px
+        }
+        #div5{
+            margin-top:20px;
+            margin-right:927px
+        }
+        #div6{
+            margin-right:680px;
+            margin-top:0px;
+            margin-bottom:0px
+        }
+        #divsession{
+            text-align:right;
+        }
+        body{
+            text-align :center;
+            background:url(/upload/bottom.jpg) top left;
+            background-size:100% 100%;
+            background-repeat:no-repeat;
+        }
+
+    </style>
+    <script type="text/javascript">
+        function clearMember() {
+            $("#memberNo").val("");
+            $("#memberName").val("");
+            $("#idCard").val("");
+        }
+
+        function memberDetail(id) {
+            var url = "$basePath/member/detail.htm?id="+id;
+            window.location.href = url;
+        }
+
+        function deleteMem(id) {
+            if(confirm("确认删除id为："+id+"的会员吗？")){
+                window.location.href="$basePath/member/deleteMember.htm?id="+id;
+            }
+        }
+
+        function editMember(id) {
+            var url = "$basePath/member/edit.htm?id="+id;
+            window.location.href = url;
+        }
+    </script>
+</head>
+    <div id="divsession">
+        <font color="red">$!session</font><font color="blue"> 您好，欢迎登录使用！</font>
+    </div>
+    <div>
+        <form id="form1" action="http://localhost:8080/member/queryMember.htm" method="post">
+            <div id="div1" >
+                <h3 style="text-align:left"><font color="blue">搜索</font></h3>
+                会员号：<input type="text" name="memberNo" id="memberNo" value="$!member.memberNo">&nbsp;&nbsp;&nbsp;&nbsp;
+                姓名：<input type="text" name="memberName" id="memberName" value="$!member.memberName"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                身份证号：<input type="text" name="idCard" id="idCard" value="$!member.idCard">
+                <br>
+                <br>
+                <input type="submit" value="查询"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="button" value="清空" onclick="clearMember()"/>
+                <br />
+                <br>
+            </div>
+        </form>
+    </div>
+
+
+    #if($!{members.size()}>0)
+        <table>
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>ID</th>
+                    <th>会员账号</th>
+                    <th>会员名</th>
+                    <th>地址</th>
+                    <th>学历</th>
+                    <th>备注</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($!{member} in $!{members})
+                    <tr>
+                        <td>$!{velocityCount}</td>
+                        <td>$!{member.id}</td>
+                        <td>$!{member.memberNo}</td>
+                        <td>$!{member.memberName}</td>
+                        <td>$!{member.address}</td>
+                        <td>$!{member.educateGrade}</td>
+                        <td>$!{member.remark}</td>
+                        <td>
+                            <a onclick="memberDetail('$!{member.id}');" >详情</a>&nbsp;&nbsp;
+                            <a onclick="editMember('$!{member.id}');" >修改</a>&nbsp;&nbsp;
+                            <a onclick="deleteMem('$!{member.id}');" >删除</a>&nbsp;&nbsp;
+                        </td>
+
+                    </tr>
+                #end
+            </tbody>
+        </table>
+    #else
+        <div>没有会员信息</div>
+    #end
+</html>

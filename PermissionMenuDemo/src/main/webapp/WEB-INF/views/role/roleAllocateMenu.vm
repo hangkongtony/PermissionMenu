@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <title>角色权限分配</title>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <script type="text/javascript" src="$!{basePath}/common/resources/js/jquery-1.7.2.js"></script>
+
+    <link rel="stylesheet" href="$!{basePath}/common/resources/css/zTreeStyle.css" type="text/css">
+
+    <script type="text/javascript" src="$!{basePath}/common/resources/js/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="$!{basePath}/common/resources/js/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="$!{basePath}/common/resources/js/jquery.ztree.excheck.js"></script>
+    <style type="text/css">
+        body{
+            text-align :center;
+            background:url(/upload/bottom.jpg) top left;
+            background-size:100% 100%;
+            background-repeat:no-repeat;
+        }
+        #div1{
+            width:447px;
+            border:1px solid #000;
+            margin-left:250px;
+            margin-right:0px;
+        }
+        #div2{
+            margin-left:120px;
+            margin-top:10px;
+        }
+        #div3{
+            margin-top:30px;
+            margin-left:0px;
+        }
+
+    </style>
+    <script type="text/javascript">
+        var setting = {
+//            callback: {
+//                onDblClick: zTreeOnDblClick
+//            },
+            check: {
+                enable: true
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            }
+        };
+
+        var tree = "";
+            #foreach($!{menu} in $!{menus})
+                #if("$!{menu.pId}"=="")
+                    #set(${menu.pId}=0)
+                #end
+            tree += "{id:$!{menu.id},pId:$!{menu.pId},name:'$!{menu.name}',url:'$!{menu.url}'},";
+            #end
+        tree = tree.substring(0,tree.length-1);
+        console.log(tree);
+        $(function () {
+            var menuArr = eval("["+tree+"]");
+            $.fn.zTree.init($("#treeDemo"), setting, menuArr);
+        });
+        
+        function allocateRoleMenu() {
+            var roleId = document.getElementById("roleId").value;
+            var roleName = document.getElementById("roleName").value;
+            //权限菜单获取
+            var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+            var nodes = treeObj.getCheckedNodes(true);
+            var mids = new Array();
+            if(nodes.length<=0){
+                alert("请选择需要分配的菜单权限");
+                return;
+            }
+            for(var i = 0;i <nodes.length;i++){
+                var mid = nodes[i].id;
+                mids[i] = mid;
+            }
+##            window.location.href = "$basePath/role/allocateRoleMenu.htm?roleId="+roleId+"&roleName="+roleName+"&mids="+mids;
+            window.location.href = "http://localhost:8080/role/allocateRoleMenu.htm?roleId="+roleId+"&roleName="+roleName+"&mids="+mids;
+        }
+    </script>
+</head>
+<body>
+    <div class="zTreeDemoBackground left">
+        <ul id="treeDemo" class="ztree"></ul>
+    </div>
+
+    <div id="div1">
+        <h1><font color="blue">角色的权限分配</font></h1>
+        <br>
+        <div id="div2">
+            <table border="0" cellspacing="0px" style="border-collapse: collapse" width="300">
+                <tr><th>角色ID</th><td><input type="text" readonly name="roleId" id="roleId" value="$!role.roleId" /></td></tr>
+                <tr><th>角色名：</th><td><input type="text" readonly name="roleName" id="roleName" value="$!role.roleName" /></td></tr>
+            </table>
+            <div id="div3">
+                <input value="权限分配&生成Sql脚本" type="button" onclick="allocateRoleMenu()">&nbsp;&nbsp;
+                <input value="返回" onclick="javascript:window.history.go(-1)">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <title>noAccess!</title>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <script type="text/javascript" src="$!{basePath}/common/resources/js/jquery-1.7.2.js"></script>
+    <style type="text/css">
+
+        body{
+            text-align :center;
+            background:url(/upload/bottom.jpg) top left;
+            background-size:100% 100%;
+            background-repeat:no-repeat;
+        }
+
+    </style>
+    <script type="text/javascript">
+
+
+    </script>
+</head>
+<body>
+    <h1><font color="red">您好！您的会话已经过期，请重新<a href="/login">登录</a></font></h1>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <title>操作员管理</title>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <script type="text/javascript" src="../../common/resources/js/jquery-1.7.2.js"></script>
+    <style type="text/css">
+        body{
+            text-align :center;
+            background:url(/upload/bottom.jpg) top left;
+            background-size:100% 100%;
+            background-repeat:no-repeat;
+        }
+        a:link {
+            text-decoration: none;
+        }
+        #div1{
+            border:1px solid #000;
+        }
+        #div2{
+            border:1px solid #000;
+            margin-left:10px;
+            margin-right:10px;
+            margin-top:10px;
+        }
+        #div3{
+            border:1px solid #000;
+            margin-left:10px;
+            margin-right:10px;
+            margin-top:20px;
+            margin-bottom:10px;
+        }
+        #div4{
+            margin-left:10px;
+            margin-right:10px;
+            margin-top:10px;
+            margin-bottom:10px;
+        }
+        #div5{
+            margin-right:847px;
+            margin-top:20px;
+        }
+        #div6{
+            margin-right:700px;
+        }
+        #div7{
+            margin-right:830px;
+            margin-top:10px;
+        }
+        #divsession{
+            text-align:right;
+        }
+    </style>
+</head>
+<script type="text/javascript">
+    function init(){
+
+    }
+
+    function selectUser(){
+        document.forms[0].submit();
+    }
+
+    function clearInput(){
+        $('#loginName').val("");
+        $('#roleId').val("");
+        $('#state').val("");
+
+    }
+
+    function detail(loginName,roleId){
+        window.location.href="/selectUserByLoginName?loginName="+loginName;
+
+    }
+
+    function startOrStop(name,flag){
+        var loginName=document.getElementById("loginName").value;
+        var roleId=document.getElementById("roleId").value;
+        var state=document.getElementById("state").value;
+        if(flag==1){
+            if("确定要禁用 【"+name+"】操作员？"){
+                window.location.href="/startOrStopUser?name="+name+"&flag="+flag+"&loginName="+loginName+"&roleId="+roleId+"&state="+state;
+            }
+
+        }else{
+            if("确定要启用 【"+name+"】操作员？"){
+                window.location.href="/startOrStopUser?name="+name+"&flag="+flag+"&loginName="+loginName+"&roleId="+roleId+"&state="+state;
+            }
+        }
+
+    }
+    function del(name){
+        if(confirm("确定要注销【"+name+"】操作员？一旦注销该操作员将不存在")){
+            var loginName=document.getElementById("loginName").value;
+            var roleId=document.getElementById("roleId").value;
+            var state=document.getElementById("state").value;
+            window.location.href="/delUserByLoginName?name="+name+"&loginName="+loginName+"&roleId="+roleId+"&state="+state;
+
+        }
+    }
+
+    function edit(name,roleId){
+        window.location.href="/editUserByLoginName?name="+name+"&roleId="+roleId;
+        //window.open("/editUserByLoginName?name="+name+"&roleId="+roleId);
+
+    }
+
+    function allocateRole(name){
+        window.location.href="/toAllocateRolePage?loginName="+name;
+    }
+    function addUser(){
+        window.location.href="/users/addUserPage";
+    }
+</script>
+<body init="init()">
+<div id="top">
+    <img src="/upload/top.jpg" />
+</div>
+<div id="divsession">
+    <font color="red">$!session</font><font color="blue"> 您好，欢迎登录使用！</font>
+</div>
+<div id="div1">
+    <h2 style="text-align:center"><font color="blue"  >操作员管理</font></h2>
+    <div id="div2">
+        <h3 style="text-align:left"><font color="blue">搜索</font></h3>
+        <form action="/selectUsers" method="post">
+            登录名：<input type="text" size="15" name="loginName" id="loginName" value="$!user.loginName"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            角色：<select id="roleId" style="width:120" name="roleId">
+            <option value="">请选择 </option>
+            #foreach($role in $roles)
+                #if($user.roleId==$role.roleId)
+                    <option value="$role.roleId" selected>$role.roleName (<font color="blue">$role.roleId</font>)</option>
+                #else
+                    <option value="$role.roleId">$role.roleName (<font color="blue">$role.roleId</font>)</option>
+                #end
+
+            #end
+        </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            状态：<select id="state" name="state" style="width:120">
+            #if($!user.state)
+                #if($user.state==1)
+                    <option value="" >请选择 </option>
+                    <option value="1" selected>启用 </option>
+                    <option value="2">禁用 </option>
+                #end
+                #if($user.state==2)
+                    <option value="" >请选择 </option>
+                    <option value="1">启用 </option>
+                    <option value="2" selected>禁用 </option>
+                #end
+            #else
+                <option value="" >请选择 </option>
+                <option value="1">启用 </option>
+                <option value="2" >禁用 </option>
+            #end
+
+        </select>&nbsp;&nbsp;&nbsp;<br /><br /><br>
+            <input type="button" value="查询" onclick="selectUser()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" value="清空" onclick="clearInput()">
+        </form>
+    </div>
+    <div id="div5">
+        <input type="button" value="新增操作员" onclick="addUser()"/>
+    </div>
+    <div id="div6">
+        <h3><font color="blue">$!name</font><font color="red">$!msg</font></h3>
+    </div>
+    <div id="div3">
+        <div id="div7"><font color="blue">操作员信息列表：</font></div>
+        <div id="div4">
+
+            <table border="1" cellspacing="0px" style="border-collapse:collapse" width="900">
+                <tr><th>序号</th><th>登录名</th><th>角色Id</th><th>状态</th><th>操作</th></tr>
+                #if($!users)
+                    #foreach($user in $users)
+                        <tr  #if($velocityCount%2==0) style="background:#00AEAE;"  #end>
+                            <td>$velocityCount</td><td>$user.loginName</td><td>
+                            #if($!user.roleId!=0)
+            								$!user.roleId
+            								#end
+                        </td>
+                            #if($!user.state)
+                                #if($user.state==1)
+                                    <td>启用</td>
+                                #else
+                                    <td>禁用</td>
+                                #end
+                            #else
+                                <td></td>
+                            #end
+                            <td><a  onclick="detail('$user.loginName')">详情</a>&nbsp;&nbsp;&nbsp;
+                                #if($user.state==1)
+                                    <a  onclick="startOrStop('$user.loginName','$!user.state')">禁用</a>&nbsp;&nbsp;&nbsp;
+                                #else
+                                    <a  onclick="startOrStop('$user.loginName','$!user.state')">启用</a>&nbsp;&nbsp;&nbsp;
+                                #end
+                                <a  onclick="del('$user.loginName')">注销</a>&nbsp;&nbsp;&nbsp;
+                                <a  onclick="edit('$!user.loginName','$!user.roleId')">修改</a>&nbsp;&nbsp;&nbsp;
+                                <a  onclick="allocateRole('$user.loginName')">角色分配</a>
+                                </a>
+                            </td>
+                        </tr>
+                    #end
+                #else
+                    <tr><td colspan="5">暂无数据 </td></tr>
+                #end
+
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

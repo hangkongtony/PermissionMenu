@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <title>角色查看</title>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <script type="text/javascript" src="$!{basePath}/common/resources/js/jquery-1.7.2.js"></script>
+    <style type="text/css">
+        .h1 {
+            margin: 0 auto;
+        }
+        #div{
+            border:1px solid #000;
+            padding-left:10px;
+            padding-right:10px;
+            padding-top:10px;
+            padding-bottom:10px
+        }
+        #div1{
+            border:1px solid #000;
+        }
+        #div2{
+            border:1px solid #000;
+            margin-top:10px
+        }
+        #div3{
+            margin-top:10px;
+            margin-right:847px
+        }
+        #div4{
+            margin-top:10px;
+            margin-left:10px;
+            margin-bottom:20px
+        }
+        #div5{
+            margin-top:20px;
+            margin-right:927px
+        }
+        #div6{
+            margin-right:680px;
+            margin-top:0px;
+            margin-bottom:0px
+        }
+        #divsession{
+            text-align:right;
+        }
+        body{
+            text-align :center;
+            background:url(/upload/bottom.jpg) top left;
+            background-size:100% 100%;
+            background-repeat:no-repeat;
+        }
+
+    </style>
+    <script type="text/javascript">
+        function queryRole() {
+            var roleId = $("#roleId").val();
+            var roleName = $("#roleName").val();
+            if(roleId==""||roleId==undefined&&roleName==""||roleName==undefined){
+                alert("id 或 name 为空");
+                return false;
+            }
+            document.forms[0].submit();
+        }
+
+        function clearRole() {
+            $("#roleId").val("");
+            $("#roleName").val("");
+        }
+        
+        function allocationMenu(roleId,roleName) {
+            if(confirm("确认分配权限吗？？")){
+                var url = encodeURI("$!{basePath}/role/toRoleAllocateMenuPage.htm?roleId="+roleId+"&roleName="+roleName);
+                window.location.href =url ;//http://localhost:8080/
+            }
+        }
+    </script>
+</head>
+<body>
+<div id="divsession">
+    <font color="red">$!session</font><font color="blue"> 您好，欢迎登录使用！</font>
+</div>
+<div>
+    <form id="form1" action="http://localhost:8080/role/queryRole.htm" method="post">
+        <div id="div1" >
+            <h3 style="text-align:left"><font color="blue">搜索</font></h3>
+            角色id：<input type="text" name="roleId" id="roleId" value="$!role.roleId">&nbsp;&nbsp;&nbsp;&nbsp;
+            角色名：<input type="text" name="roleName" id="roleName" value="$!role.roleName"/>&nbsp;&nbsp;&nbsp;&nbsp;
+            <br>
+            <br>
+            <input type="submit" value="查询" onclick="queryRole()/>&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" value="清空" onclick="clearRole()"/>
+            <br />
+            <br>
+        </div>
+    </form>
+</div>
+
+
+    #if($!{roles.size()}>0)
+    <table>
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>ID</th>
+            <th>角色名</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+            #foreach($!{role} in $!{roles})
+            <tr #if($!{velocityCount}%2==0) style="background: #00aeae"
+            #end>
+                <td>$!{velocityCount}</td>
+                <td>$!{role.roleId}</td>
+                <td>$!{role.roleName}</td>
+                <td>
+                    <a  style="text-decoration:none"  onclick="editRole('$role.roleId')">修改</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a  style="text-decoration:none"  onclick="deleteRole('$role.roleId','$role.roleName')">删除</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a  style="text-decoration:none"  onclick="allocationMenu('$!role.roleId','$!role.roleName')">分配权限</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                </td>
+
+            </tr>
+            #end
+        </tbody>
+    </table>
+    #else
+    <div>没有角色信息</div>
+    #end
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <title>操作员修改</title>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <script type="text/javascript" src="../../common/resources/js/jquery-1.7.2.js"></script>
+    <style type="text/css">
+        body{
+            text-align :center;
+            background:url(/upload/bottom.jpg) top left;
+            background-size:100% 100%;
+            background-repeat:no-repeat;
+        }
+        #div1{
+            border:1px solid #000;
+        }
+        #div2{
+            margin-left:347px;
+        }
+    </style>
+    <script type="application/javascript">
+        function doSubmit() {
+            document.forms[0].submit();
+        }
+        
+        function roleIdChange() {
+            $("#roleName").val($("#roleId").val());
+        }
+        
+        function roleNameChange() {
+            $("#roleId").val($("#roleName").val());
+        }
+    </script>
+</head>
+<body>
+    <form action="$!basePath/user/allocateRoleAction.htm" method="post">
+        <input id="id" name="id" type="hidden" value="$user.id">
+        用户名：<input id="loginName" name="loginName" readonly type="text" value="$user.loginName"><br>
+        角色Id：<select id="roleId" name="roleId" onchange="roleIdChange()">
+                <option selected value="">请选择</option>
+                #foreach($role in $roles)
+                    <option value="$role.roleId" #if($role.roleId==$user.roleId) selected #end>$role.roleId</option>
+                #end
+                </select>&nbsp;&nbsp;
+        角色名：<select id="roleName" name="roleName" onchange="roleNameChange()">
+                <option selected value="">请选择</option>
+                #foreach($role in $roles)
+                    <option value="$role.roleId" #if($role.roleId==$user.roleId) selected #end>$role.roleName</option>
+                #end
+                </select><br>
+        <input type="button" value="修改"  onclick="doSubmit()">&nbsp;&nbsp;
+        <input type="button" value="返回" id="back" onclick="javascript:window.history.go(-1)">
+    </form>
+</body>
+</html>
